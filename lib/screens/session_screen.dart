@@ -9,11 +9,11 @@ class SessionScreen extends StatefulWidget {
   final bool isHost;
 
   const SessionScreen({
-    Key? key,
+    super.key,
     required this.userId,
     this.sessionId,
     required this.isHost,
-  }) : super(key: key);
+  });
 
   @override
   State<SessionScreen> createState() => _SessionScreenState();
@@ -100,7 +100,7 @@ class _SessionScreenState extends State<SessionScreen> {
                         ),
                         ..._participants
                             .map((p) => Text('• $p', style: const TextStyle(fontSize: 11)))
-                            .toList(),
+                            ,
                       ],
                     ),
                   ),

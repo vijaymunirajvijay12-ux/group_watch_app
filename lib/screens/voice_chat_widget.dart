@@ -6,10 +6,10 @@ class VoiceChatWidget extends StatefulWidget {
   final String userId;
 
   const VoiceChatWidget({
-    Key? key,
+    super.key,
     required this.channelName,
     required this.userId,
-  }) : super(key: key);
+  });
 
   @override
   State<VoiceChatWidget> createState() => _VoiceChatWidgetState();

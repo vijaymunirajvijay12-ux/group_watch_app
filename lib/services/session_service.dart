@@ -1,12 +1,13 @@
-import 'package:socket_io_client/socket_io_client.dart' as IO;
+import "package:flutter/foundation.dart";
+import 'package:socket_io_client/socket_io_client.dart' as io;
 import '../models/session.dart';
 
 class SessionService {
-  late IO.Socket socket;
-  static const String SERVER_URL = 'http://your-server.com';
+  late io.Socket socket;
+  static const String serverUrl = 'http://your-server.com';
 
   Future<void> init() async {
-    socket = IO.io(SERVER_URL, IO.OptionBuilder()
+    socket = io.io(serverUrl, io.OptionBuilder()
         .setTransports(['websocket'])
         .disableAutoConnect()
         .build());
@@ -14,11 +15,11 @@ class SessionService {
     socket.connect();
 
     socket.on('connect', (_) {
-      print('Connected to server');
+      debugPrint('Connected to server');
     });
 
     socket.on('disconnect', (_) {
-      print('Disconnected from server');
+      debugPrint('Disconnected from server');
     });
   }
 

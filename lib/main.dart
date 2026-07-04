@@ -6,7 +6,7 @@ void main() {
 }
 
 class GroupWatchApp extends StatelessWidget {
-  const GroupWatchApp({Key? key}) : super(key: key);
+  const GroupWatchApp({super.key});
 
   @override
   Widget build(BuildContext context) {

@@ -4,7 +4,7 @@ import 'package:video_player/video_player.dart';
 class VideoPlayerWidget extends StatefulWidget {
   final String videoUrl;
 
-  const VideoPlayerWidget({Key? key, required this.videoUrl}) : super(key: key);
+  const VideoPlayerWidget({super.key, required this.videoUrl});
 
   @override
   State<VideoPlayerWidget> createState() => _VideoPlayerWidgetState();
@@ -27,7 +27,7 @@ class _VideoPlayerWidgetState extends State<VideoPlayerWidget> {
         _controller.play();
         _isPlaying = true;
       }).catchError((e) {
-        print('Video error: $e');
+        debugPrint('Video error: $e');
       });
   }
 
