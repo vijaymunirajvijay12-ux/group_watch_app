@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import '../services/session_service.dart';
 import 'video_player_widget.dart';
+import 'voice_chat_widget.dart';
 
 class SessionScreen extends StatefulWidget {
   final String userId;
@@ -22,7 +23,7 @@ class _SessionScreenState extends State<SessionScreen> {
   late SessionService _sessionService;
   String? _currentSessionId;
   List<String> _participants = [];
-  bool _isMuted = false;
+  bool _voiceChatEnabled = false;
 
   @override
   void initState() {
@@ -104,6 +105,12 @@ class _SessionScreenState extends State<SessionScreen> {
                     ),
                   ),
                   const SizedBox(height: 20),
+                  if (_voiceChatEnabled)
+                    VoiceChatWidget(
+                      channelName: _currentSessionId ?? 'default',
+                      userId: widget.userId,
+                    ),
+                  const SizedBox(height: 20),
                   const Text(
                     'Session Controls:',
                     style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
@@ -116,12 +123,12 @@ class _SessionScreenState extends State<SessionScreen> {
                     crossAxisSpacing: 10,
                     children: [
                       _buildControlButton(
-                        Icons.mic,
-                        _isMuted ? 'Unmute' : 'Mute',
-                        _isMuted ? Colors.red : Colors.blue,
+                        _voiceChatEnabled ? Icons.mic : Icons.mic_none,
+                        _voiceChatEnabled ? 'Stop Voice' : 'Start Voice',
+                        _voiceChatEnabled ? Colors.red : Colors.blue,
                         () {
                           setState(() {
-                            _isMuted = !_isMuted;
+                            _voiceChatEnabled = !_voiceChatEnabled;
                           });
                         },
                       ),
