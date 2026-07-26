@@ -6,7 +6,7 @@ plugins {
 
 android {
     namespace = "com.example.group_watch_app_new"
-    compileSdk = flutter.compileSdkVersion
+    compileSdk = 35
     ndkVersion = flutter.ndkVersion
 
     compileOptions {
@@ -43,3 +43,4 @@ kotlin {
 flutter {
     source = "../.."
 }
+
