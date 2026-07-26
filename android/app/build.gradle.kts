@@ -43,4 +43,6 @@ kotlin {
 flutter {
     source = "../.."
 }
-
+configurations.all {
+    exclude(group = "io.agora.rtc", module = "iris-rtc")
+}
