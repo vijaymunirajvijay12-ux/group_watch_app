@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "972178180020",
+    "project_id": "group-watch-app",
+    "storage_bucket": "group-watch-app.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:972178180020:android:085f504e4b605650a5d4e1",
+        "android_client_info": {
+          "package_name": "com.example.group_watch_app_new"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyB-2c-J_mMJ5xpCdkOuz9lbm-sUgvVNXjQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
