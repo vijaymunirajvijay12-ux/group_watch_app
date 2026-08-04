@@ -133,12 +133,6 @@ class _SessionScreenState extends State<SessionScreen> {
                         },
                       ),
                       _buildControlButton(
-                        Icons.videocam,
-                        'Camera',
-                        Colors.blue,
-                        () {},
-                      ),
-                      _buildControlButton(
                         Icons.chat,
                         'Chat',
                         Colors.blue,
