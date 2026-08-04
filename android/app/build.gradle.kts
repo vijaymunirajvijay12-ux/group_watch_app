@@ -1,5 +1,3 @@
- cat android/build.gradle.kts | head -20
- cat android/app/build.gradle.kts | head -10
 plugins {
     id("com.android.application")
     id("com.google.gms.google-services")
