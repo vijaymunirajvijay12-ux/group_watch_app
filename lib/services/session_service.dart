@@ -1,60 +1,64 @@
-import "package:flutter/foundation.dart";
-import 'package:socket_io_client/socket_io_client.dart' as io;
+import 'dart:async';
+import 'package:firebase_database/firebase_database.dart';
 import '../models/session.dart';
 
 class SessionService {
-  late io.Socket socket;
-  static const String serverUrl = 'http://your-server.com';
+  final DatabaseReference _sessionsRef =
+      FirebaseDatabase.instance.ref('sessions');
+  String? _currentSessionId;
+  StreamSubscription<DatabaseEvent>? _subscription;
 
   Future<void> init() async {
-    socket = io.io(serverUrl, io.OptionBuilder()
-        .setTransports(['websocket'])
-        .disableAutoConnect()
-        .build());
-
-    socket.connect();
-
-    socket.on('connect', (_) {
-      debugPrint('Connected to server');
-    });
-
-    socket.on('disconnect', (_) {
-      debugPrint('Disconnected from server');
-    });
+    // Firebase is already initialized in main.dart
   }
 
   Future<String> createSession(String hostId, String videoUrl) async {
-    return Future.delayed(const Duration(seconds: 1), () {
-      final sessionId = DateTime.now().millisecondsSinceEpoch.toString();
-      final session = Session(
-        sessionId: sessionId,
-        hostId: hostId,
-        videoUrl: videoUrl,
-        participants: [hostId],
-        createdAt: DateTime.now(),
-        isActive: true,
-      );
-      
-      socket.emit('session_created', session.toJson());
-      return sessionId;
-    });
+    final sessionId = DateTime.now().millisecondsSinceEpoch.toString();
+    final session = Session(
+      sessionId: sessionId,
+      hostId: hostId,
+      videoUrl: videoUrl,
+      participants: [hostId],
+      createdAt: DateTime.now(),
+      isActive: true,
+    );
+
+    await _sessionsRef.child(sessionId).set(session.toJson());
+    _currentSessionId = sessionId;
+    return sessionId;
   }
 
   Future<void> joinSession(String sessionId, String userId) async {
-    socket.emit('join_session', {
-      'sessionId': sessionId,
-      'userId': userId,
-    });
+    _currentSessionId = sessionId;
+    final participantsRef =
+        _sessionsRef.child(sessionId).child('participants');
+    final snapshot = await participantsRef.get();
+
+    List<String> participants = [];
+    if (snapshot.exists && snapshot.value != null) {
+      participants = List<String>.from(snapshot.value as List);
+    }
+
+    if (!participants.contains(userId)) {
+      participants.add(userId);
+      await participantsRef.set(participants);
+    }
   }
 
   void listenToSessionUpdates(Function(Session) onUpdate) {
-    socket.on('session_update', (data) {
-      final session = Session.fromJson(data);
-      onUpdate(session);
+    if (_currentSessionId == null) return;
+    _subscription =
+        _sessionsRef.child(_currentSessionId!).onValue.listen((event) {
+      final data = event.snapshot.value;
+      if (data != null) {
+        final session =
+            Session.fromJson(Map<String, dynamic>.from(data as Map));
+        onUpdate(session);
+      }
     });
   }
 
   void disconnect() {
-    socket.disconnect();
+    _subscription?.cancel();
   }
 }
